@@ -2,6 +2,7 @@ let id = '';
 let hide = false;
 let of = 0;
 let vttContent = '';
+let selectedLevel = 'middle';
 
 let player;
 let ytApiReady = false;
@@ -54,6 +55,14 @@ function initModal() {
             <label style="display:flex;flex-direction:column;">Offset (s): 
                 <input type="number" id="modalOffset" value="0" step="0.1">
             </label>
+            <label style="display:flex;flex-direction:column;">Dificultad:
+                <select id="modalLevel">
+                    <option value="easy">Fácil</option>
+                    <option value="middle" selected>Medio</option>
+                    <option value="hard">Difícil</option>
+                    <option value="imposible">Imposible</option>
+                </select>
+            </label>
             <label style="display:flex;flex-direction:column;">Subtítulos (VTT): 
                 <input type="file" id="modalVttFile" accept=".vtt">
             </label>
@@ -82,6 +91,7 @@ function initModal() {
         document.getElementById('modalVideoId').value = id;
         document.getElementById('modalHide').checked = hide;
         document.getElementById('modalOffset').value = of;
+        document.getElementById('modalLevel').value = selectedLevel;
         overlay.style.display = 'flex';
     });
 
@@ -89,6 +99,7 @@ function initModal() {
         const newId = document.getElementById('modalVideoId').value.trim();
         hide = document.getElementById('modalHide').checked;
         of = parseFloat(document.getElementById('modalOffset').value) || 0;
+        selectedLevel = document.getElementById('modalLevel').value;
 
         if (!newId || (!vttContent && !id)) {
             alert("Por favor, introduce el ID del video y sube el archivo VTT.");
@@ -248,7 +259,7 @@ async function onPlayerReady(event) {
 
         subdiv.focus();
 
-        const levelDiv = 'middle' //At the moment
+        const levelDiv = selectedLevel;
         const level = {
             'easy': 0.2,
             'middle': 0.4,
